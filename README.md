@@ -1,6 +1,6 @@
 # WastelandRoots – Growing Life from Waste in a Post-Apocalyptic World 🪴💚🪏
 
-## Description - Base Concept
+## Description - Project Overview
 
 In **WastelandRoots**, players cultivate plants in containers made from **recycled waste**. Each plant goes through unique **growth stages** and requires timely **watering**, as neglect can cause **sickness** or even **death**. ♻
 
