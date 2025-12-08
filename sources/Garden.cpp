@@ -1,7 +1,7 @@
 //
 // Created by horeanga on 02/11/2025.
 
-#include "Garden.h"
+/*#include "Garden.h"
 
 void Garden::addContainer(Container& c) {
     containers.push_back(&c);  // stocăm adresa
@@ -18,6 +18,26 @@ std::ostream& operator<<(std::ostream& os, const Garden& g) {
     os << "Garden:\n";
     for (auto* c : g.containers) {
         os << " " << *c << "\n"; // dereferințiere pointer
+    }
+    return os;
+}*/
+#include "Garden.h"
+
+#include <iostream>
+
+void Garden::addContainer(std::shared_ptr<Container> c) {
+    containers.push_back(std::move(c));
+}
+
+void Garden::simulateGrowth() {
+    for (auto& c : containers) c->simulatePlantGrowth();
+}
+
+std::ostream& operator<<(std::ostream& os, const Garden& g) {
+    os << "Garden:\n";
+    int idx = 1;
+    for (auto& c : g.containers) {
+        os << " Container " << idx++ << " -> " << *c << "\n";
     }
     return os;
 }

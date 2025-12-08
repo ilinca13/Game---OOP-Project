@@ -52,7 +52,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         main.cpp
         sources/Item.cpp
         sources/Potion.cpp
-        sources/Plant.cpp
+        sources/PlantBase.cpp
+        sources/CarrotPlant.cpp
+        sources/CornPlant.cpp
+        sources/PepperPlant.cpp
+        sources/TomatoPlant.cpp
+        sources/ToxicBloom.cpp
         sources/Container.cpp
         sources/Garden.cpp
 )

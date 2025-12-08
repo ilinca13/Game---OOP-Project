@@ -1,0 +1,5 @@
+CarrotFruit Common
+TomatoFruit Uncommon
+PepperFruit Uncommon
+Corncob Rare
+ToxicSpores Rare
