@@ -7,10 +7,7 @@
 #include "Potion.h"
 #include "Container.h"
 #include "Garden.h"
-#include "CarrotPlant.h"
-#include "CornPlant.h"
-#include "PepperPlant.h"
-#include "TomatoPlant.h"
+#include "Factory.h"
 #include "Exceptions.h"
 #include "Decorator.h" // Fertilized, RareHarvest
 
@@ -46,14 +43,15 @@ c4->disinfect();
 // --------------------------
 // Plant seeds
 // --------------------------
-c1->plantSeed(std::make_shared<CarrotPlant>());
-c3->plantSeed(std::make_shared<PepperPlant>());
-c4->plantSeed(std::make_shared<CornPlant>());
+//
 
+    c1->plantSeed(PlantFactory::createPlant("Carrot"));
+    c3->plantSeed(PlantFactory::createPlant("Pepper"));
+    c4->plantSeed(PlantFactory::createPlant("Corn"));
 // Tomato sick plant
 auto cTom = std::make_shared<Container>();
 cTom->disinfect();
-cTom->plantSeed(std::make_shared<TomatoPlant>(true));
+    cTom->plantSeed(PlantFactory::createPlant("Tomato", true));
 
 // --------------------------
 // Garden
@@ -106,7 +104,7 @@ std::cout << "\n--- Initial Garden State ---\n" << garden << "\n";
     doubleFertContainer->disinfect();
 
     // 1. Cream morcov
-    auto carrot = std::make_shared<CarrotPlant>();
+    auto carrot = PlantFactory::createPlant("Carrot");
     doubleFertContainer->plantSeed(carrot);
 
     // 2. Udam planta de 4 ori pentru waterLevel suficient
