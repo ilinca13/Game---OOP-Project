@@ -102,7 +102,7 @@ for (int cycle = 1; cycle <= 5; ++cycle) {
 
     // Ud plantele (fara cele din containere murdare)
     std::cout << "--- Watering plants ---\n";
-    for (auto& cont : garden.getContainers()) {
+    for (const auto& cont : garden.getContainers()) {
     if (cont->hasPlant()) cont->getPlant()->water();
         }
     doubleFertContainer->getPlant()->water(); // fertilized carrot
@@ -112,7 +112,7 @@ for (int cycle = 1; cycle <= 5; ++cycle) {
     doubleFertContainer->getPlant()->grow();
 
     // Vindec Tomato bolnava
-    for (auto& cont : garden.getContainers()) {
+    for (const auto& cont : garden.getContainers()) {
     if (!cont->hasPlant()) continue;
     auto p = cont->getPlant();
     auto tptr = std::dynamic_pointer_cast<TomatoPlant>(p);
@@ -131,7 +131,7 @@ std::vector<std::shared_ptr<Container>> allContainers = garden.getContainers();
 allContainers.push_back(doubleFertContainer); // includem planta fertilizata
 
 int harvestedCount = 0;
-for (auto& cont : allContainers) {
+for (const auto& cont : allContainers) {
 if (!cont->hasPlant()) continue;
 auto p = cont->getPlant();
 if (p->isMature()) {
@@ -156,11 +156,11 @@ std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
     // Clasa template
     //1.Instantiere
     ColectieGenerica<Item> itemsCol("Items Colectie");
-    for (auto& it : items) itemsCol.add(it);
+    for (const auto& it : items) itemsCol.add(it);
 
     //2.Instantiere
     ColectieGenerica<std::string> numePlanteCol("Nume Plante Colectie");
-    for (auto& c : garden.getContainers()) {
+    for (const auto& c : garden.getContainers()) {
         if (c->hasPlant()) numePlanteCol.add(c->getPlant()->describe());
         else numePlanteCol.add("(empty container)");
     }
@@ -198,7 +198,7 @@ std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
             planteDecorated.push_back("(empty container)");
         }
     }*/
-    for (auto& c : toateContainerele) {
+    for (const auto& c : toateContainerele) {
         if (!c->hasPlant()) {
             planteDecorated.push_back("(empty container)");
             continue;
