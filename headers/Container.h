@@ -26,8 +26,9 @@ public:
     Container& operator=(Container other); // copy-and-swap
     void disinfect();
     bool plantSeed(std::shared_ptr<PlantBase> p); // may throw ContainerException
-    void simulatePlantGrowth();
+    void simulatePlantGrowth() const;
     std::shared_ptr<PlantBase> getPlant() const { return plant; }
+    void setPlant(std::shared_ptr<PlantBase> newPlant);
     bool hasPlant() const { return plant != nullptr; }
 
     friend std::ostream& operator<<(std::ostream& os, const Container& c);

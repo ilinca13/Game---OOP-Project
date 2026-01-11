@@ -57,9 +57,9 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         sources/CornPlant.cpp
         sources/PepperPlant.cpp
         sources/TomatoPlant.cpp
-        sources/ToxicBloom.cpp
         sources/Container.cpp
         sources/Garden.cpp
+        sources/Decorator.cpp
 )
 target_include_directories(${MAIN_EXECUTABLE_NAME} PRIVATE headers)
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

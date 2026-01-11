@@ -22,6 +22,6 @@ public:
     TomatoPlant();
     explicit TomatoPlant(bool startSick);
     Item harvest() override;
-    std::shared_ptr<PlantBase> clone() const override;
+    [[nodiscard]] std::shared_ptr<PlantBase> clone() const override;
 };
 #endif

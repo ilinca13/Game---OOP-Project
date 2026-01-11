@@ -57,7 +57,7 @@ std::vector<Item> Item::loadFromFile(const std::string& filename) {
         }
         // normalize
         std::transform(rarityStr.begin(), rarityStr.end(), rarityStr.begin(), ::tolower);
-        RarityLevel r = RarityLevel::Common;
+        RarityLevel r;
         if (rarityStr == "common") r = RarityLevel::Common;
         else if (rarityStr == "uncommon") r = RarityLevel::Uncommon;
         else if (rarityStr == "rare") r = RarityLevel::Rare;

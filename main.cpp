@@ -11,139 +11,207 @@
 #include "CornPlant.h"
 #include "PepperPlant.h"
 #include "TomatoPlant.h"
-#include "ToxicBloom.h"
 #include "Exceptions.h"
+#include "Decorator.h" // Fertilized, RareHarvest
 
 int main() {
-    try {
-        // Load data files (example file paths)
-        auto items = Item::loadFromFile("data/items.txt");
-        auto potions = Potion::loadFromFile("data/potions.txt");
+try {
+// --------------------------
+// Load items and potions
+// --------------------------
+auto items = Item::loadFromFile("data/items.txt");
+auto potions = Potion::loadFromFile("data/potions.txt");
 
-        std::cout << "Loaded " << items.size() << " items and " << potions.size() << " potions.\n";
-        for (const auto& p : potions) std::cout << " Potion: " << p << "\n";
-        for (const auto& it : items) std::cout << " Item: " << it << "\n";
+std::cout << "Loaded " << items.size() << " items and " << potions.size() << " potions.\n";
+for (const auto& p : potions) std::cout << " Potion: " << p << "\n";
+for (const auto& it : items) std::cout << " Item: " << it << "\n";
 
-        // pick potions
-        Potion healing = potions.size() >= 1 ? potions[0] : Potion("Healing", 3);
-        Potion disinfect = potions.size() >= 2 ? potions[1] : Potion("Disinfect", 5);
+Potion healing = potions.size() >= 1 ? potions[0] : Potion("Healing", 3);
+Potion disinfect = potions.size() >= 2 ? potions[1] : Potion("Disinfect", 5);
 
-        // create containers
-        auto c1 = std::make_shared<Container>();
-        auto c2 = std::make_shared<Container>();
-        auto c3 = std::make_shared<Container>();
-        auto c4 = std::make_shared<Container>();
+// --------------------------
+// Create containers
+// --------------------------
+auto c1 = std::make_shared<Container>();
+auto c2 = std::make_shared<Container>();
+auto c3 = std::make_shared<Container>();
+auto c4 = std::make_shared<Container>();
 
-        // disinfect all except c2 (dirty)
-        c1->disinfect();
-        // c2 remains dirty on purpose
-        c3->disinfect();
-        c4->disinfect();
+// Disinfect some containers
+c1->disinfect();
+// c2 remains dirty intentionally
+c3->disinfect();
+c4->disinfect();
 
-        // plant 4 plants, one starts sick (Tomato)
-        c1->plantSeed(std::make_shared<CarrotPlant>());
-        // tomato start sick = true
-        c2->disinfect(); // to allow planting; the scenario asked for a dirty container intentionally — demonstrate exception:
-        try {
-            // put tomato into dirty container to show exception; here we deliberately skip disinfect to trigger exception
-            std::shared_ptr<Container> c2_dirty = std::make_shared<Container>();
-            // DO NOT disinfect c2_dirty; try planting -> should throw
-            try {
-                c2_dirty->plantSeed(std::make_shared<TomatoPlant>(true));
-            } catch (const ContainerException& ce) {
-                std::cout << "Expected container exception: " << ce.what() << "\n";
-            }
-            // now use the original c2 (which remains dirty) to demonstrate dirty container behavior
-            // leave c2 dirty, do NOT plant there to satisfy "an un-disinfected container remains" requirement
-        } catch (...) { /* ignore */ }
+// --------------------------
+// Plant seeds
+// --------------------------
+c1->plantSeed(std::make_shared<CarrotPlant>());
+c3->plantSeed(std::make_shared<PepperPlant>());
+c4->plantSeed(std::make_shared<CornPlant>());
 
-        // plant into c3 and c4
-        c3->plantSeed(std::make_shared<PepperPlant>());
-        c4->plantSeed(std::make_shared<CornPlant>());
+// Tomato sick plant
+auto cTom = std::make_shared<Container>();
+cTom->disinfect();
+cTom->plantSeed(std::make_shared<TomatoPlant>(true));
 
-        // make a Tomato in another container which we will treat as the "sick plant"
-        auto cTom = std::make_shared<Container>();
-        cTom->disinfect();
-        cTom->plantSeed(std::make_shared<TomatoPlant>(true)); // sick tomato
+// --------------------------
+// Garden
+// --------------------------
+Garden garden;
+garden.addContainer(c1);
+garden.addContainer(c2); // dirty, empty
+garden.addContainer(c3);
+garden.addContainer(c4);
+garden.addContainer(cTom);
 
-        Garden garden;
-        garden.addContainer(c1);
-        garden.addContainer(c2); // dirty, no plant
-        garden.addContainer(c3);
-        garden.addContainer(c4);
-        garden.addContainer(cTom);
+std::cout << "\n--- Initial Garden State ---\n" << garden << "\n";
 
-        std::cout << "\n--- Initial Garden State ---\n" << garden << "\n";
+    /*// --- Mini-test Fertilized Decorator ---
+    std::cout << "\n=== Fertilized Decorator Test ===\n";
 
-        // Round 1: no watering
-        std::cout << "\n--- Growth Simulation #1 (no watering) ---\n";
-        garden.simulateGrowth();
+    auto testContainer = std::make_shared<Container>();
+    testContainer->disinfect();
 
-        // Water all planted containers (except the intentionally dirty one which has no plant)
-        std::cout << "\n--- Watering plants ---\n";
-        for (auto& cont : garden.getContainers()) {
-            if (cont->hasPlant()) cont->getPlant()->water();
-        }
+    // Cream morcov
+    auto testCarrot = std::make_shared<CarrotPlant>();
+    testContainer->plantSeed(testCarrot);
 
-        // Round 2: after watering
-        std::cout << "\n--- Growth Simulation #2 ---\n";
-        garden.simulateGrowth();
+    // Udam planta de 3 ori
+    std::cout << "Watering carrot 3 times...\n";
+    testContainer->getPlant()->water();
+    testContainer->getPlant()->water();
+    testContainer->getPlant()->water();
 
-        // Now heal the sick tomato (we find it by scanning containers)
-        std::cout << "\n--- Healing sick plants ---\n";
-        for (auto& cont : garden.getContainers()) {
-            if (!cont->hasPlant()) continue;
-            auto p = cont->getPlant();
-            // dynamic cast to Tomato to illustrate dynamic_pointer_cast usage (downcast with sense)
-            auto tptr = std::dynamic_pointer_cast<TomatoPlant>(p);
-            if (tptr && tptr->isMature() == false && /* initially sick */ true) {
-                // We cannot check sick protected member; rely on behavior: try to grow and heal if it says it's sick.
-                // For demonstration, heal all TomatoPlants
-                std::cout << "Attempting to heal Tomato in a container\n";
-                p->setSick(false); // or use p->heal(healing) if heal existed as non-virtual
-                std::cout << "Healed Tomato.\n";
-            }
-        }
+    // Afisam stadiul initial
+    std::cout << "Before applying Fertilized: " << *testContainer << "\n";
 
-        // Water again
-        std::cout << "\n--- Watering again ---\n";
-        for (auto& cont : garden.getContainers()) {
-            if (cont->hasPlant()) cont->getPlant()->water();
-        }
+    // Aplicam decoratorul
+    auto fertCarrot = std::make_shared<FertilizedPlant>(testContainer->getPlant());
+    testContainer->setPlant(fertCarrot);
 
-        // Round 3
-        std::cout << "\n--- Growth Simulation #3 ---\n";
-        garden.simulateGrowth();
+    // Afisam stadiul dupa decorator
+    std::cout << "After applying Fertilized: " << *testContainer << "\n";
 
-        // Harvest mature plants
-        std::cout << "\n--- Harvesting ---\n";
-        for (auto& cont : garden.getContainers()) {
-            if (!cont->hasPlant()) continue;
-            auto p = cont->getPlant();
-            if (p->isMature()) {
-                Item it = p->harvest();
-                std::cout << "Harvested: " << it << "\n";
-            }
-        }
+    // Apelam grow (decoratorul va creste de doua ori)
+    testContainer->getPlant()->grow();
 
-        // Statistics (static attributes)
-        std::cout << "\n--- Stats ---\n";
-        std::cout << "Total plants created: " << PlantBase::getTotalPlantsCreated() << "\n";
-        std::cout << "Total containers created: " << Container::getTotalContainers() << "\n";
-        std::cout << "Total potions loaded: " << Potion::getTotalPotionsLoaded() << "\n";
-        std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
+    // Afisam stadiul final
+    std::cout << "After grow() with Fertilized: " << *testContainer << "\n";*/
 
+    // --- Test: Două decoratori Fertilized peste morcov ---
+    std::cout << "\n=== Double Fertilized Decorator Test ===\n";
 
-    } catch (const GameException& ge) {
-        std::cerr << "Game error: " << ge.what() << "\n";
-        return 2;
-    } catch (const std::exception& ex) {
-        std::cerr << "Unexpected error: " << ex.what() << "\n";
-        return 3;
-    }
+    auto doubleFertContainer = std::make_shared<Container>();
+    doubleFertContainer->disinfect();
 
-    return 0;
+    // 1. Cream morcov
+    auto carrot = std::make_shared<CarrotPlant>();
+    doubleFertContainer->plantSeed(carrot);
 
+    // 2. Udam planta de 4 ori pentru waterLevel suficient
+    std::cout << "Watering carrot 4 times...\n";
+    for (int i = 0; i < 4; ++i)
+        doubleFertContainer->getPlant()->water();
+
+    // Afisam stadiul initial
+    std::cout << "Before decorators: " << *doubleFertContainer << "\n";
+
+    // 3. Aplicam primul Fertilized decorator
+    auto fert1 = std::make_shared<FertilizedPlant>(doubleFertContainer->getPlant());
+    doubleFertContainer->setPlant(fert1);
+    std::cout << "After first Fertilized: " << *doubleFertContainer << "\n";
+
+    // 4. Aplicam al doilea Fertilized decorator peste primul
+    auto fert2 = std::make_shared<FertilizedPlant>(doubleFertContainer->getPlant());
+    doubleFertContainer->setPlant(fert2);
+    std::cout << "After second Fertilized: " << *doubleFertContainer << "\n";
+
+    // 5. Apelam grow; fiecare Fertilized crește de două ori => total 4 creșteri
+    doubleFertContainer->getPlant()->grow();
+
+    // 6. Afisam stadiul final
+    std::cout << "After grow() with double Fertilized: " << *doubleFertContainer << "\n";
+// --------------------------
+// Test Decorators
+// --------------------------
+/*std::cout << "\n--- Testing Fertilized Decorator ---\n";
+auto fertCarrot = std::make_shared<FertilizedPlant>(c1->getPlant());
+c1->setPlant(fertCarrot);
+std::cout << "Before growth: " << *c1 << "\n";
+c1->getPlant()->grow(); // crește de 2 ori
+std::cout << "After growth (Fertilized): " << *c1 << "\n";
+
+std::cout << "\n--- Testing RareHarvest Decorator ---\n";
+auto rareCarrot = std::make_shared<RareHarvestPlant>(c1->getPlant());
+c1->setPlant(rareCarrot);
+Item hiItem = c1->getPlant()->harvest();
+std::cout << "Harvested: " << hiItem << "\n"; // raritate Epic*/
+
+// --------------------------
+// Simulate general growth
+// --------------------------
+std::cout << "\n--- Growth Simulation #1 (no watering) ---\n";
+garden.simulateGrowth();
+
+std::cout << "\n--- Watering plants ---\n";
+for (auto& cont : garden.getContainers()) {
+if (cont->hasPlant()) cont->getPlant()->water();
+}
+
+std::cout << "\n--- Growth Simulation #2 ---\n";
+garden.simulateGrowth();
+
+// Heal sick Tomato
+std::cout << "\n--- Healing sick plants ---\n";
+for (auto& cont : garden.getContainers()) {
+if (!cont->hasPlant()) continue;
+auto p = cont->getPlant();
+auto tptr = std::dynamic_pointer_cast<TomatoPlant>(p);
+if (tptr && !tptr->isMature()) {
+p->setSick(false);
+std::cout << "Healed Tomato in container.\n";
+}
+}
+
+// Water again
+std::cout << "\n--- Watering again ---\n";
+for (auto& cont : garden.getContainers()) {
+if (cont->hasPlant()) cont->getPlant()->water();
+}
+
+std::cout << "\n--- Growth Simulation #3 ---\n";
+garden.simulateGrowth();
+
+// Harvest mature plants
+std::cout << "\n--- Harvesting ---\n";
+for (auto& cont : garden.getContainers()) {
+if (!cont->hasPlant()) continue;
+auto p = cont->getPlant();
+if (p->isMature()) {
+Item it = p->harvest();
+std::cout << "Harvested: " << it << "\n";
+}
+}
+
+// --------------------------
+// Stats
+// --------------------------
+std::cout << "\n--- Stats ---\n";
+std::cout << "Total plants created: " << PlantBase::getTotalPlantsCreated() << "\n";
+std::cout << "Total containers created: " << Container::getTotalContainers() << "\n";
+std::cout << "Total potions loaded: " << Potion::getTotalPotionsLoaded() << "\n";
+std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
+
+} catch (const GameException& ge) {
+std::cerr << "Game error: " << ge.what() << "\n";
+return 2;
+} catch (const std::exception& ex) {
+std::cerr << "Unexpected error: " << ex.what() << "\n";
+return 3;
+}
+
+return 0;
 }
 
 

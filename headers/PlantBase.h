@@ -42,13 +42,19 @@ protected:
 
 public:
     virtual ~PlantBase() = default;
-    void water();
-    void grow();
+    const std::string& getType() const {return type;}
+    virtual void water();
+    virtual void grow();
     bool isMature() const;
     bool isDead() const;
     void setSick(bool state);
     virtual Item harvest() = 0; // theme-specific function (pure virtual)
     virtual std::shared_ptr<PlantBase> clone() const = 0;
+    virtual std::string describe() const {
+        return type + " (Stage: " + growthStageToString(growthStage)
+        + ", Water: " + std::to_string(waterLevel)
+        + ", Sick: " + (sick ? "Yes" : "No") + ")";
+    }
     friend std::ostream& operator<<(std::ostream& os, const PlantBase& plant);
     // static accessor
     static int getTotalPlantsCreated() { return totalPlantsCreated; }

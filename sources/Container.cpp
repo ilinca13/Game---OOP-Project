@@ -41,10 +41,16 @@ bool Container::plantSeed(std::shared_ptr<PlantBase> p) {
     return true;
 }
 
-void Container::simulatePlantGrowth() {
+void Container::simulatePlantGrowth() const
+{
     if (plant) plant->grow();
 }
 
+void Container::setPlant(std::shared_ptr<PlantBase> newPlant)
+{
+    if (!newPlant) throw ContainerException("Cannot plant: null pointer");
+    plant = std::move(newPlant);
+}
 
 
 std::ostream& operator<<(std::ostream& os, const Container& c) {

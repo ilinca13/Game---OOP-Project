@@ -10,7 +10,7 @@ void Garden::addContainer(std::shared_ptr<Container> c) {
     containers.push_back(std::move(c));
 }
 
-void Garden::simulateGrowth() {
+void Garden::simulateGrowth() const {
     for (auto& c : containers) c->simulatePlantGrowth();
 }
 

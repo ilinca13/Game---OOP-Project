@@ -16,7 +16,7 @@ private:
     std::vector<std::shared_ptr<Container>> containers;
 public:
     void addContainer(std::shared_ptr<Container> c);
-    void simulateGrowth();
+    void simulateGrowth() const;
     const std::vector<std::shared_ptr<Container>>& getContainers() const { return containers; }
     friend std::ostream& operator<<(std::ostream& os, const Garden& g);
 };
