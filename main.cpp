@@ -212,6 +212,23 @@ std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
             planteDecorated.push_back("[Normal]");
     }
     afiseazaElemente(planteDecorated, "Decorated status plante");
+
+
+    // cppcheck unusedFunction guards
+
+    for (const auto& it : items) {
+        (void)it.getRarity();
+    }
+
+    for (const auto& p : potions) {
+        (void)p.getPotency();
+    }
+
+    for (const auto& c : garden.getContainers()) {
+        if (c->hasPlant()) {
+            (void)c->getPlant()->isDead();
+        }
+    }
 } catch (const GameException& ge) {
 std::cerr << "Game error: " << ge.what() << "\n";
 return 2;

@@ -11,13 +11,13 @@ void Garden::addContainer(std::shared_ptr<Container> c) {
 }
 
 void Garden::simulateGrowth() const {
-    for (auto& c : containers) c->simulatePlantGrowth();
+    for (const auto& c : containers) c->simulatePlantGrowth();
 }
 
 std::ostream& operator<<(std::ostream& os, const Garden& g) {
     os << "Garden:\n";
     int idx = 1;
-    for (auto& c : g.containers) {
+    for (const auto& c : g.containers) {
         os << " Container " << idx++ << " -> " << *c << "\n";
     }
     return os;
