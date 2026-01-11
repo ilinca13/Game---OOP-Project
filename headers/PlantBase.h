@@ -12,7 +12,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include "Item.h" // harvest returns Item
+#include "Item.h"
 
 enum class GrowthStage {
     Seed = 1,
@@ -31,12 +31,10 @@ protected:
     GrowthStage growthStage;
     int waterLevel;
     bool sick;
-    // static counter
     static int totalPlantsCreated;
     explicit PlantBase(const std::string& type_ = "Unknown");
     PlantBase(const PlantBase& other);
     PlantBase& operator=(const PlantBase& other);
-    // virtuals (NVI pattern: public grow() will call growImpl)
     virtual void growImpl() = 0;
     virtual void printImpl(std::ostream& os) const = 0;
 
@@ -48,7 +46,7 @@ public:
     bool isMature() const;
     bool isDead() const;
     void setSick(bool state);
-    virtual Item harvest() = 0; // theme-specific function (pure virtual)
+    virtual Item harvest() = 0;
     virtual std::shared_ptr<PlantBase> clone() const = 0;
     virtual std::string describe() const {
         return type + " (Stage: " + growthStageToString(growthStage)
@@ -56,7 +54,7 @@ public:
         + ", Sick: " + (sick ? "Yes" : "No") + ")";
     }
     friend std::ostream& operator<<(std::ostream& os, const PlantBase& plant);
-    // static accessor
+
     static int getTotalPlantsCreated() { return totalPlantsCreated; }
 };
 #endif // OOP_PLANTBASE_H

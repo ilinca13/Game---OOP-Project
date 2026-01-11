@@ -14,7 +14,7 @@
 
 class CarrotPlant : public PlantBase {
 private:
-    int size; // specific attribute
+    int size;
 protected:
     void growImpl() override;
     void printImpl(std::ostream& os) const override;

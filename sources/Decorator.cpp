@@ -4,9 +4,7 @@
 #include "Decorator.h"
 #include <iostream>
 
-/* ===============================
-PlantDecorator (bază)
-=============================== */
+
 PlantDecorator::PlantDecorator(std::shared_ptr<PlantBase> plant)
 : PlantBase(plant->getType()), wrapped(std::move(plant)) {}
 
@@ -35,9 +33,7 @@ void PlantDecorator::printImpl(std::ostream& os) const {
     os << describe(); //sa tin minte aici sa vad de ce dadea eroare membru inaccesibil wrapped->printImpl(os)
 }
 
-/* ===============================
-FertilizedPlant
-=============================== */
+
 FertilizedPlant::FertilizedPlant(std::shared_ptr<PlantBase> plant)
 : PlantDecorator(std::move(plant)) {}
 
@@ -51,26 +47,5 @@ Item FertilizedPlant::harvest() {
     return Item(base.getName(), RarityLevel::Epic);
 }
 
-/* ===============================
-PoisonedPlant
-=============================== */
-PoisonedPlant::PoisonedPlant(std::shared_ptr<PlantBase> plant)
-: PlantDecorator(std::move(plant)) {}
 
-void PoisonedPlant::grow() {
-    std::cout << wrapped->getType() << " is poisoned and grows slower.\n";
-    wrapped->grow(); // o singură dată
-}
-
-/* ===============================
-RareHarvestPlant
-=============================== */
-RareHarvestPlant::RareHarvestPlant(std::shared_ptr<PlantBase> plant)
-: PlantDecorator(std::move(plant)) {}
-
-// Override pentru harvest: transformă itemul obținut în Epic
-Item RareHarvestPlant::harvest() {
-    Item baseItem = wrapped->harvest(); // obține itemul original
-    return Item(baseItem.getName(), RarityLevel::Epic); // modifică raritatea
-}
 

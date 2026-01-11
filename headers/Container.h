@@ -22,10 +22,10 @@ private:
 
 public:
     Container();
-    Container(const Container& other); // copy ctor
-    Container& operator=(Container other); // copy-and-swap
+    Container(const Container& other);
+    Container& operator=(Container other);
     void disinfect();
-    bool plantSeed(std::shared_ptr<PlantBase> p); // may throw ContainerException
+    bool plantSeed(std::shared_ptr<PlantBase> p);
     void simulatePlantGrowth() const;
     std::shared_ptr<PlantBase> getPlant() const { return plant; }
     void setPlant(std::shared_ptr<PlantBase> newPlant);

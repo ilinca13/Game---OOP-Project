@@ -10,9 +10,9 @@
 
 
 
-// --------------------------
+
 // Clasa template: ColectieGenerica
-// --------------------------
+
 template <typename T>
 class ColectieGenerica {
 private:
@@ -43,9 +43,9 @@ public:
     }
 };
 
-// --------------------------
+
 // Funcție template: afiseazaElemente
-// --------------------------
+
 template <typename T>
 void afiseazaElemente(const std::vector<T>& lista, const std::string& titlu) {
     std::cout << "\n>>> Lista: " << titlu << " <<<\n";

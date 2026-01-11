@@ -55,6 +55,6 @@ bool PlantBase::isMature() const { return growthStage == GrowthStage::Mature; }
 bool PlantBase::isDead() const { return sick && waterLevel == 0; }
 void PlantBase::setSick(bool state) { sick = state; }
 std::ostream& operator<<(std::ostream& os, const PlantBase& plant) {
-    os << plant.describe(); // în loc de plant.printImpl()
+    os << plant.describe(); // in loc de plant.printImpl()
     return os;
 }

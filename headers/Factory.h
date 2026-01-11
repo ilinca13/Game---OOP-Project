@@ -20,7 +20,7 @@ public:
         else if (type == "Corn") return std::make_shared<CornPlant>();
         else if (type == "Tomato") return std::make_shared<TomatoPlant>(sick);
         else if (type == "Pepper") return std::make_shared<PepperPlant>();
-        else return nullptr; // sau aruncă excepție
+        else return nullptr;
     }
 };
 #endif //GAME_OOP_PROJECT_FACTORY_H

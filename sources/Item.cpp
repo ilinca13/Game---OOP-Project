@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream& os, const Item& it) {
     return os;
 }
 
-// File format: name rarityString (space separated); rarityString one of Common/Uncommon/Rare/Epic/Legendary
+
 std::vector<Item> Item::loadFromFile(const std::string& filename) {
     std::ifstream fin(filename);
     if (!fin) throw FileReadException(filename);

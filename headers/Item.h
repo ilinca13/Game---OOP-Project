@@ -19,16 +19,16 @@ enum class RarityLevel {
 };
 
 std::string rarityToString(RarityLevel r);
-//Clasa Item reprezinta obiectele pe care jucatorul le poate obtine dupa ce o planta ajunge la maturitate
+
 class Item {
 
 private:
-    std::string name; //numele obiectului
-    RarityLevel rarity; //raritatea
+    std::string name;
+    RarityLevel rarity;
     static int totalItemsCreated;
 
 public:
-    //Constructor cu parametrii default
+
     explicit Item(const std::string& name = "Unknown", RarityLevel rarity = RarityLevel::Common);
     // copy ctor & copy-and-swap operator=
     Item(const Item& other);
@@ -36,7 +36,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Item& it);
     const std::string& getName() const { return name; }
     RarityLevel getRarity() const { return rarity; }
-    static std::vector<Item> loadFromFile(const std::string& filename); // throws FileReadException/DataFormatException
+    static std::vector<Item> loadFromFile(const std::string& filename);
     static int getTotalItemsCreated() { return totalItemsCreated; }
 };
 

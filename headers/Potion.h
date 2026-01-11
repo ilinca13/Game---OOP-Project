@@ -14,7 +14,7 @@
 class Potion {
 private:
     std::string name;
-    int potency; // how strong
+    int potency;
     static int totalPotionsLoaded;
 
 public:
@@ -24,7 +24,7 @@ public:
     const std::string& getName() const { return name; }
     int getPotency() const { return potency; }
     friend std::ostream& operator<<(std::ostream& os, const Potion& p);
-    static std::vector<Potion> loadFromFile(const std::string& filename); // may throw FileReadException/DataFormatException
+    static std::vector<Potion> loadFromFile(const std::string& filename);
     static int getTotalPotionsLoaded() { return totalPotionsLoaded; }
 };
 

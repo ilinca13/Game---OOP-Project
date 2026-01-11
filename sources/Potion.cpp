@@ -9,7 +9,7 @@
 
 int Potion::totalPotionsLoaded = 0;
 Potion::Potion(const std::string& name_, int potency_) : name(name_), potency(potency_) {
-    // no throw here
+
 }
 
 Potion::Potion(const Potion& other) : name(other.name), potency(other.potency) {}
@@ -23,7 +23,7 @@ std::ostream& operator<<(std::ostream& os, const Potion& p) {
     os << p.name << " (potency=" << p.potency << ")";
     return os;
 }
-// file format: name potency (space separated, potency integer)
+
 std::vector<Potion> Potion::loadFromFile(const std::string& filename) {
     std::ifstream fin(filename);
     if (!fin) throw FileReadException(filename);

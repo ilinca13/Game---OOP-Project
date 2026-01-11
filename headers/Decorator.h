@@ -9,9 +9,7 @@
 #include "Item.h"
 #include <memory>
 
-/* ===============================
-Decorator de bază
-=============================== */
+
 class PlantDecorator : public PlantBase {
 protected:
     std::shared_ptr<PlantBase> wrapped;
@@ -30,9 +28,7 @@ protected:
     void printImpl(std::ostream& os) const override;
 };
 
-/* ===============================
-FertilizedPlant
-=============================== */
+
 class FertilizedPlant : public PlantDecorator {
 public:
     explicit FertilizedPlant(std::shared_ptr<PlantBase> plant);
@@ -41,26 +37,7 @@ public:
     Item harvest() override;
 };
 
-/* ===============================
-PoisonedPlant
-=============================== */
-class PoisonedPlant : public PlantDecorator {
-public:
-    explicit PoisonedPlant(std::shared_ptr<PlantBase> plant);
 
-    void grow() override;
-};
-
-/* ===============================
-RareHarvestPlant
-=============================== */
-class RareHarvestPlant : public PlantDecorator {
-public:
-    explicit RareHarvestPlant(std::shared_ptr<PlantBase> plant);
-
-    // Override pentru harvest
-    Item harvest() override;
-};
 
 
 #endif //GAME_OOP_PROJECT_DECORATOR_H

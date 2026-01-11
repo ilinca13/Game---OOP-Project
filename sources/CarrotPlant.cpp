@@ -8,7 +8,7 @@
 
 CarrotPlant::CarrotPlant() : PlantBase("Carrot"), size(1) {}
 void CarrotPlant::growImpl() {
-    // advance growth stage by one
+
     growthStage = static_cast<GrowthStage>(static_cast<int>(growthStage) + 1);
     ++size;
     std::cout << type << " grew to stage: " << growthStageToString(growthStage) << " (size=" << size << ")\n";
