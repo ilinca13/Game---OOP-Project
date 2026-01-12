@@ -2,10 +2,7 @@
 // Created by horeanga on 08/12/2025.
 //
 
-/*#ifndef GAME_OOP_PROJECT_CORNPLANT_H
-#define GAME_OOP_PROJECT_CORNPLANT_H
 
-#endif //GAME_OOP_PROJECT_CORNPLANT_H*/
 
 #ifndef OOP_CORNPLANT_H
 #define OOP_CORNPLANT_H

@@ -2,10 +2,7 @@
 // Created by horeanga on 08/12/2025.
 //
 
-/*#ifndef GAME_OOP_PROJECT_PLANTBASE_H
-#define GAME_OOP_PROJECT_PLANTBASE_H
 
-#endif //GAME_OOP_PROJECT_PLANTBASE_H*/
 #ifndef OOP_PLANTBASE_H
 #define OOP_PLANTBASE_H
 

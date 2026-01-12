@@ -52,10 +52,10 @@ std::vector<Item> Item::loadFromFile(const std::string& filename) {
         std::istringstream iss(line);
         std::string name, rarityStr;
         if (!(iss >> name >> rarityStr)) {
-            // skip empty or malformed lines but report format issues as DataFormatException
+
             throw DataFormatException("Malformed item line " + std::to_string(lineno) + " in " + filename);
         }
-        // normalize
+
         std::transform(rarityStr.begin(), rarityStr.end(), rarityStr.begin(), ::tolower);
         RarityLevel r;
         if (rarityStr == "common") r = RarityLevel::Common;

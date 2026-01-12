@@ -2,10 +2,7 @@
 // Created by horeanga on 08/12/2025.
 //
 
-/*#ifndef GAME_OOP_PROJECT_TOXICBLOOM_H
-#define GAME_OOP_PROJECT_TOXICBLOOM_H
 
-#endif //GAME_OOP_PROJECT_TOXICBLOOM_H*/
 
 #ifndef OOP_TOXICBLOOM_H
 #define OOP_TOXICBLOOM_H

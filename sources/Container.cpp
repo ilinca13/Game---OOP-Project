@@ -17,7 +17,7 @@ Container::Container(const Container& other) : clean(other.clean) {
 }
 
 Container& Container::operator=(Container other) {
-    // copy-and-swap
+
     std::swap(clean, other.clean);
     std::swap(plant, other.plant);
     return *this;

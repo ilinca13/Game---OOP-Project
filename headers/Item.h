@@ -30,7 +30,6 @@ private:
 public:
 
     explicit Item(const std::string& name = "Unknown", RarityLevel rarity = RarityLevel::Common);
-    // copy ctor & copy-and-swap operator=
     Item(const Item& other);
     Item& operator=(Item other);
     friend std::ostream& operator<<(std::ostream& os, const Item& it);

@@ -2,10 +2,7 @@
 // Created by horeanga on 08/12/2025.
 //
 
-/*#ifndef GAME_OOP_PROJECT_EXCEPTIONS_H
-#define GAME_OOP_PROJECT_EXCEPTIONS_H
 
-#endif //GAME_OOP_PROJECT_EXCEPTIONS_H*/
 
 #ifndef OOP_EXCEPTIONS_H
 #define OOP_EXCEPTIONS_H

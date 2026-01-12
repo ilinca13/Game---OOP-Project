@@ -11,7 +11,7 @@
 #include "Garden.h"
 #include "Factory.h"
 #include "Exceptions.h"
-#include "Decorator.h" // Fertilized, RareHarvest
+#include "Decorator.h"
 #include "Templates.h"
 
 int main() {
@@ -95,7 +95,7 @@ doubleFertContainer->getPlant()->grow();
 std::cout << "After grow() with double Fertilized: " << *doubleFertContainer << "\n";
 
 
-// Cicluri de crestere pentru a ca plantele sa atinga maturitaea
+// Cicluri de crestere pentru a ca plantele sa atinga maturitatea
 
 for (int cycle = 1; cycle <= 5; ++cycle) {
     std::cout << "\n--- Growth Simulation #" << cycle << " ---\n";
@@ -214,7 +214,7 @@ std::cout << "Total items loaded: " << Item::getTotalItemsCreated() << "\n";
     afiseazaElemente(planteDecorated, "Decorated status plante");
 
 
-    // cppcheck unusedFunction guards
+    // cppcheck
 
     for (const auto& it : items) {
         (void)it.getRarity();
